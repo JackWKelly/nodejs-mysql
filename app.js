@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const mysql = require('mysql');
 
 //load custom dependencies
 const routes = require('./routes');

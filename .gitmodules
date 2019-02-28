@@ -1,0 +1,3 @@
+[submodule "nodejs-mysql-frontend"]
+	path = nodejs-mysql-frontend
+	url = https://github.com/JackWKelly/nodejs-mysql-frontend.git
