@@ -8,3 +8,11 @@ exports.listOrders = function(req, res) {
             res.send(data);
         })
 }
+
+exports.totalCost = function(req, res) {
+    let orderNumber = req.params.id;
+    services.getTotalCost(orderNumber)
+        .then(function(data){
+            res.send(data);
+        })
+}

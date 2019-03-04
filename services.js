@@ -24,5 +24,29 @@ exports.readOrders = function(){
                 resolve(resultJson);
             })
         })
+}
 
+exports.getTotalCost = function(orderNumber){
+    return new Promise(function(resolve, reject){
+            sqlCon.query(`
+            #find the cost of a given order
+            SELECT SUM(unitCost) AS total
+            FROM
+            (SELECT item.itemCost * itemOrder.itemQuantity AS unitCost
+            FROM  
+                itemOrder
+                    INNER JOIN
+                item ON itemOrder.itemName = item.itemName
+            WHERE
+                itemOrder.orderNumber = ${orderNumber}
+            ) as findCost;`
+                , function (err, result, fields) {
+                if (err) reject(err);
+
+                const objectifyRawPacket = row => ({...row}); //some magic suggested by stackoverflow
+                let resultJson = result.map(objectifyRawPacket);
+                resolve(resultJson);
+                }
+            )
+    })
 }
