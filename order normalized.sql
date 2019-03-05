@@ -94,6 +94,18 @@ CREATE TABLE orders(
     FOREIGN KEY (card, buyerID) REFERENCES registeredCards (card, buyerID)
 );
 
+CREATE TABLE audits(
+	auditID			int					PRIMARY KEY auto_increment,
+    orderNumber		int,
+    buyerID			int,
+    FOREIGN KEY (orderNumber) REFERENCES orders (orderNumber),
+    FOREIGN KEY (buyerID) REFERENCES buyer (buyerID)
+);
+
+CREATE TRIGGER auditlog AFTER INSERT ON orders
+FOR EACH ROW 
+INSERT INTO audits VALUES (null, NEW.orderNumber, NEW.buyerID);
+
 INSERT INTO orders VALUES
 ('1', '2019-04-03 13:50:34', '2019-04-05', '1', '345435435435345', '89, Harrison Road OJ8 75YU'),
 ('2', '2019-02-01 14:30:34', '2019-05-05', '2', '345435435435345', '89, Harrison Road OJ8 75YU'), 
@@ -123,6 +135,8 @@ INSERT INTO itemOrder VALUES
 ('5', 'Hat', '2'),
 ('6', 'Van', '1')
 ;
+
+SELECT * FROM audits;
 
 #find the cost of a given order
 SELECT SUM(unitCost) AS total
